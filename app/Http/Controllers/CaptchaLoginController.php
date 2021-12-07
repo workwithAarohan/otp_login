@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OTPMail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Rules\Captcha;
+use Illuminate\Support\Facades\Mail;
 
 class CaptchaLoginController extends Controller
 {
@@ -41,7 +43,7 @@ class CaptchaLoginController extends Controller
                 // $request->session()->put('LoggedUser', $userInfo->id);
 
                 // return redirect('/dashboard');
-                return redirect('/sendOTP/'. $userInfo->mobile);
+                return redirect('/emailOTP/'. $userInfo->id);
             }
             else
             {
@@ -51,14 +53,29 @@ class CaptchaLoginController extends Controller
 
     }
 
-    public function sendOTP($mobile)
+    public function emailOTP(User $user)
     {
         $otp = rand(1111,9999);
-        $user = User::where('mobile', $mobile)->first();
 
         $user->otp = $otp;
         $user->save();
-        dd($user->otp);
+
+        $email = [
+            'title' => 'Laravel OTP Verification',
+            'body' => 'Login Code: ' . $otp,
+        ];
+
+        Mail::to('3techiesteam@gmail.com')->send(new OTPMail($email));
+
+        return redirect('/otpVerificationPage');
+    }
+
+    public function sendOTP(User $user)
+    {
+        $otp = rand(1111,9999);
+
+        $user->otp = $otp;
+        $user->save();
 
         $nexmo = app('Nexmo\Client');
         $nexmo->message()->send([

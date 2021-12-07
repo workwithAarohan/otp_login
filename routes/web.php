@@ -35,4 +35,6 @@ Route::get('/otpVerificationPage',  [App\Http\Controllers\CaptchaLoginController
 
 Route::get('/sendOTP/{user}', [App\Http\Controllers\CaptchaLoginController::class, 'sendOTP'])->name('send.OTP');
 
+Route::get('/emailOTP/{user}', [App\Http\Controllers\CaptchaLoginController::class, 'emailOTP'])->name('email.OTP');
+
 Route::post('/otpVerify', [App\Http\Controllers\CaptchaLoginController::class, 'verifyOTP'])->name('otp.verify');
