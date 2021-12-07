@@ -7,7 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Rules\Captcha;
-use Illuminate\Support\Facades\Mail;
+//use Illuminate\Support\Facades\Mail;
+use Mail;
 
 class CaptchaLoginController extends Controller
 {
@@ -65,7 +66,14 @@ class CaptchaLoginController extends Controller
             'body' => 'Login Code: ' . $otp,
         ];
 
-        Mail::to('3techiesteam@gmail.com')->send(new OTPMail($email));
+       // Mail::to('3techiesteam@gmail.com')->send(new OTPMail($email));
+
+
+       Mail::send('emails.message',$email,function($messages) use ($user){
+        $messages->to('sujankunwar2021@gmail.com');
+        $messages->subject('Hello');
+    });
+
 
         return redirect('/otpVerificationPage');
     }

@@ -7,9 +7,8 @@
     <title>Account Verification</title>
 </head>
 <body>
-    <h1>{{ $email['title'] }}</h1>
-
-    <p>{{ $email['body'] }}</p>
+   
+    hello
 
     
 </body>
