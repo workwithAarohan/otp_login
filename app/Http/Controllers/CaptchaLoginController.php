@@ -68,10 +68,10 @@ class CaptchaLoginController extends Controller
 
        // Mail::to('3techiesteam@gmail.com')->send(new OTPMail($email));
 
-
+        $user['email'] = $user->email;
        Mail::send('emails.message',$email,function($messages) use ($user){
-        $messages->to('sujankunwar2021@gmail.com');
-        $messages->subject('Hello');
+        $messages->to($user['email']);
+        $messages->subject('Email OTP Authentication');
     });
 
 
